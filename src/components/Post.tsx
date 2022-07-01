@@ -1,3 +1,4 @@
+import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
 export const Post: React.FC = () => (
@@ -50,5 +51,11 @@ export const Post: React.FC = () => (
         <button type="submit">Publicar</button>
       </footer>
     </form>
+
+    <div className={styles.commentList}>
+      <Comment />
+      <Comment />
+      <Comment />
+    </div>
   </article>
 );
