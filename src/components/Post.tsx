@@ -41,5 +41,14 @@ export const Post: React.FC = () => (
         <a href="#">#rocketseat</a>
       </p>
     </div>
+
+    <form className={styles.commentForm} onSubmit={e => e.preventDefault()}>
+      <strong>Deixe seu feedback</strong>
+      <textarea placeholder="Deixe um comentário" />
+
+      <footer>
+        <button type="submit">Publicar</button>
+      </footer>
+    </form>
   </article>
 );

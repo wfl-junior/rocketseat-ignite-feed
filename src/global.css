@@ -13,6 +13,11 @@
   --green-500: #00875f;
 }
 
+:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 2px var(--green-500);
+}
+
 *,
 *::before,
 *::after {
@@ -35,4 +40,8 @@ button {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
 }
