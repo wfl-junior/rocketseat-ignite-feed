@@ -10,7 +10,7 @@ export interface NestedContent {
 }
 
 export interface Content {
-  type: "paragraph" | "link";
+  type: "paragraph";
   content: string | NestedContent[];
 }
 

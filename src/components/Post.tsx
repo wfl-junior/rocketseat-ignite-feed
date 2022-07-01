@@ -1,3 +1,6 @@
+import { format, formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Fragment } from "react";
 import { PostData } from "../types";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
@@ -5,57 +8,73 @@ import styles from "./Post.module.css";
 
 type PostProps = PostData;
 
-export const Post: React.FC<PostProps> = ({ author }) => (
-  <article className={styles.post}>
-    <header>
-      <div className={styles.author}>
-        <Avatar src={author.avatarUrl} />
+export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
+  const publishedDateTitle = format(
+    publishedAt,
+    "d 'de' LLLL 'de' yyyy 'às' HH:mm'h",
+    { locale: ptBR },
+  );
 
-        <div className={styles.authorInfo}>
-          <strong>{author.name}</strong>
-          <span>{author.role}</span>
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  });
+
+  return (
+    <article className={styles.post}>
+      <header>
+        <div className={styles.author}>
+          <Avatar src={author.avatarUrl} />
+
+          <div className={styles.authorInfo}>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
+          </div>
         </div>
+
+        <time title={publishedDateTitle} dateTime={publishedAt.toISOString()}>
+          {publishedDateRelativeToNow}
+        </time>
+      </header>
+
+      <div className={styles.content}>
+        {content.map((line, index) => {
+          if (typeof line.content === "string") {
+            return <p key={index}>{line.content}</p>;
+          }
+
+          return (
+            <p key={index}>
+              {line.content.map((text, index) => {
+                if (text.type === "link") {
+                  return (
+                    <a key={index} href="#">
+                      {text.content}
+                    </a>
+                  );
+                }
+
+                return <Fragment key={index}>{text.content}</Fragment>;
+              })}
+            </p>
+          );
+        })}
       </div>
 
-      <time title="1 de julho de 2022 às 16:45" dateTime="2022-07-01 16:45:00">
-        Publicado há 1h
-      </time>
-    </header>
+      <form className={styles.commentForm} onSubmit={e => e.preventDefault()}>
+        <strong>Deixe seu feedback</strong>
+        <textarea placeholder="Deixe um comentário" />
 
-    <div className={styles.content}>
-      <p>Fala galeraa 👋</p>
+        <footer>
+          <button type="submit">Publicar</button>
+        </footer>
+      </form>
 
-      <p>
-        Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no
-        NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀
-      </p>
-
-      <p>
-        👉&nbsp;<a href="#">jane.design/doctorcare</a>
-      </p>
-
-      <p>
-        <a href="#">#novoprojeto</a>
-        &nbsp;
-        <a href="#">#nlw</a>
-        &nbsp;
-        <a href="#">#rocketseat</a>
-      </p>
-    </div>
-
-    <form className={styles.commentForm} onSubmit={e => e.preventDefault()}>
-      <strong>Deixe seu feedback</strong>
-      <textarea placeholder="Deixe um comentário" />
-
-      <footer>
-        <button type="submit">Publicar</button>
-      </footer>
-    </form>
-
-    <div className={styles.commentList}>
-      <Comment />
-      <Comment />
-      <Comment />
-    </div>
-  </article>
-);
+      <div className={styles.commentList}>
+        <Comment />
+        <Comment />
+        <Comment />
+      </div>
+    </article>
+  );
+};
