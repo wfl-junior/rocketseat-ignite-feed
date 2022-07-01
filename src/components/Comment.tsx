@@ -20,7 +20,7 @@ export const Comment: React.FC = () => (
           </div>
 
           <button type="button" title="Deletar comentário">
-            <Trash size={20} />
+            <Trash size={24} />
           </button>
         </header>
 
@@ -29,7 +29,7 @@ export const Comment: React.FC = () => (
 
       <footer>
         <button>
-          <ThumbsUp />
+          <ThumbsUp weight="bold" />
           Aplaudir <span>20</span>
         </button>
       </footer>
