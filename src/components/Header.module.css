@@ -1,4 +1,22 @@
 .header {
-  background-color: #333;
-  height: 80px;
+  background-color: var(--gray-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 1.25rem;
+}
+
+.header > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header > div > img {
+  height: 2rem;
+}
+
+.header > div > strong {
+  font-size: 1.6rem;
+  color: var(--gray-100);
 }

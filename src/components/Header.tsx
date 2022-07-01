@@ -1,11 +1,11 @@
+import logo from "../assets/logo.svg";
 import styles from "./Header.module.css";
 
-interface HeaderProps {}
-
-export const Header: React.FC<HeaderProps> = () => {
-  return (
-    <header className={styles.header}>
+export const Header: React.FC = () => (
+  <header className={styles.header}>
+    <div>
+      <img src={logo} alt="Logotipo do Ignite Feed" />
       <strong>Ignite Feed</strong>
-    </header>
-  );
-};
+    </div>
+  </header>
+);
