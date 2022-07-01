@@ -13,6 +13,7 @@ export const App: React.FC = () => (
 
       <main>
         <Post />
+        <Post />
       </main>
     </div>
   </div>

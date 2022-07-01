@@ -30,12 +30,14 @@ export const Post: React.FC = () => (
       </p>
 
       <p>
-        <a href="#">👉 jane.design/doctorcare</a>
+        👉&nbsp;<a href="#">jane.design/doctorcare</a>
       </p>
 
       <p>
         <a href="#">#novoprojeto</a>
+        &nbsp;
         <a href="#">#nlw</a>
+        &nbsp;
         <a href="#">#rocketseat</a>
       </p>
     </div>
