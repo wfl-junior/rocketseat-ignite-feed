@@ -1,16 +1,19 @@
+import { PostData } from "../types";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export const Post: React.FC = () => (
+type PostProps = PostData;
+
+export const Post: React.FC<PostProps> = ({ author }) => (
   <article className={styles.post}>
     <header>
       <div className={styles.author}>
-        <Avatar src="https://github.com/wfl-junior.png" />
+        <Avatar src={author.avatarUrl} />
 
         <div className={styles.authorInfo}>
-          <strong>Wallace Júnior</strong>
-          <span>Web Developer</span>
+          <strong>{author.name}</strong>
+          <span>{author.role}</span>
         </div>
       </div>
 
