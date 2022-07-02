@@ -1,6 +1,6 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { FormEvent, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { CommentData, PostData } from "../types";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
@@ -38,8 +38,14 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
     addSuffix: true,
   });
 
-  function handleCreateNewComment(e: FormEvent<HTMLFormElement>) {
+  const isNewCommentEmpty = newCommentText.length === 0;
+
+  function handleCreateNewComment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (isNewCommentEmpty) {
+      return;
+    }
 
     setComments(comments => [
       ...comments,
@@ -50,6 +56,15 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
     ]);
 
     setNewCommentText("");
+  }
+
+  function handleNewCommentChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    e.target.setCustomValidity("");
+    setNewCommentText(e.target.value);
+  }
+
+  function handleNewCommentInvalid(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    e.target.setCustomValidity("Esse campo é obrigatório!");
   }
 
   function deleteComment(id: CommentData["id"]) {
@@ -104,12 +119,16 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
 
         <textarea
           value={newCommentText}
-          onChange={e => setNewCommentText(e.target.value)}
+          onChange={handleNewCommentChange}
           placeholder="Deixe um comentário"
+          onInvalid={handleNewCommentInvalid}
+          required
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
 
