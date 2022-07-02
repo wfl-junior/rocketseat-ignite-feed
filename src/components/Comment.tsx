@@ -2,7 +2,11 @@ import { ThumbsUp, Trash } from "phosphor-react";
 import { Avatar } from "./Avatar";
 import styles from "./Comment.module.css";
 
-export const Comment: React.FC = () => (
+interface CommentProps {
+  comment: string;
+}
+
+export const Comment: React.FC<CommentProps> = ({ comment }) => (
   <div className={styles.comment}>
     <Avatar src="https://github.com/wfl-junior.png" hasBorder={false} />
 
@@ -25,7 +29,7 @@ export const Comment: React.FC = () => (
           </button>
         </header>
 
-        <p>Muito bom Devon, parabéns!! 👏👏</p>
+        <p>{comment}</p>
       </div>
 
       <footer>

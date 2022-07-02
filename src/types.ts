@@ -20,3 +20,10 @@ export interface PostData {
   publishedAt: Date;
   content: Content[];
 }
+
+export interface CommentData {
+  id: number;
+  author: Omit<Author, "role">;
+  text: string;
+  likes: number;
+}

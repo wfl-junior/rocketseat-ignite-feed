@@ -1,14 +1,27 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Fragment } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import { PostData } from "../types";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-type PostProps = PostData;
+type PostProps = Omit<PostData, "id">;
+
+interface CommentData {
+  id: number;
+  content: string;
+}
 
 export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
+  const [newCommentText, setNewCommentText] = useState("");
+  const [comments, setComments] = useState<CommentData[]>([
+    {
+      id: 1,
+      content: "Post muito bacana, hein!?",
+    },
+  ]);
+
   const publishedDateTitle = format(
     publishedAt,
     "d 'de' LLLL 'de' yyyy 'às' HH:mm'h",
@@ -19,6 +32,20 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
     locale: ptBR,
     addSuffix: true,
   });
+
+  function handleCreateNewComment(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    setComments(comments => [
+      ...comments,
+      {
+        id: comments.length + 1,
+        content: newCommentText,
+      },
+    ]);
+
+    setNewCommentText("");
+  }
 
   return (
     <article className={styles.post}>
@@ -61,9 +88,14 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
         })}
       </div>
 
-      <form className={styles.commentForm} onSubmit={e => e.preventDefault()}>
+      <form className={styles.commentForm} onSubmit={handleCreateNewComment}>
         <strong>Deixe seu feedback</strong>
-        <textarea placeholder="Deixe um comentário" />
+
+        <textarea
+          value={newCommentText}
+          onChange={e => setNewCommentText(e.target.value)}
+          placeholder="Deixe um comentário"
+        />
 
         <footer>
           <button type="submit">Publicar</button>
@@ -71,9 +103,9 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
       </form>
 
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map(comment => (
+          <Comment key={comment.id} comment={comment.content} />
+        ))}
       </div>
     </article>
   );
