@@ -1,17 +1,12 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { FormEvent, Fragment, useState } from "react";
-import { PostData } from "../types";
+import { CommentData, PostData } from "../types";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
 type PostProps = Omit<PostData, "id">;
-
-interface CommentData {
-  id: number;
-  content: string;
-}
 
 export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
   const [newCommentText, setNewCommentText] = useState("");
@@ -45,6 +40,10 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
     ]);
 
     setNewCommentText("");
+  }
+
+  function deleteComment(id: CommentData["id"]) {
+    console.log(`Deletar comentário: ${id}`);
   }
 
   return (
@@ -104,7 +103,11 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
 
       <div className={styles.commentList}>
         {comments.map(comment => (
-          <Comment key={comment.id} comment={comment.content} />
+          <Comment
+            key={comment.id}
+            onDeleteComment={deleteComment}
+            {...comment}
+          />
         ))}
       </div>
     </article>

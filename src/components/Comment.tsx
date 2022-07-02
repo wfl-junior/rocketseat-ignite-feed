@@ -1,12 +1,17 @@
 import { ThumbsUp, Trash } from "phosphor-react";
+import { CommentData } from "../types";
 import { Avatar } from "./Avatar";
 import styles from "./Comment.module.css";
 
-interface CommentProps {
-  comment: string;
+interface CommentProps extends CommentData {
+  onDeleteComment: (id: CommentData["id"]) => void;
 }
 
-export const Comment: React.FC<CommentProps> = ({ comment }) => (
+export const Comment: React.FC<CommentProps> = ({
+  id,
+  content,
+  onDeleteComment,
+}) => (
   <div className={styles.comment}>
     <Avatar src="https://github.com/wfl-junior.png" hasBorder={false} />
 
@@ -24,12 +29,16 @@ export const Comment: React.FC<CommentProps> = ({ comment }) => (
             </time>
           </div>
 
-          <button type="button" title="Deletar comentário">
+          <button
+            type="button"
+            title="Deletar comentário"
+            onClick={() => onDeleteComment(id)}
+          >
             <Trash size={24} />
           </button>
         </header>
 
-        <p>{comment}</p>
+        <p>{content}</p>
       </div>
 
       <footer>

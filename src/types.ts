@@ -25,7 +25,5 @@ export interface PostData {
 
 export interface CommentData {
   id: number;
-  author: Omit<Author, "role">;
-  text: string;
-  likes: number;
+  content: string;
 }
