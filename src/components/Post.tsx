@@ -65,23 +65,23 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
       </header>
 
       <div className={styles.content}>
-        {content.map((line, index) => {
+        {content.map(line => {
           if (typeof line.content === "string") {
-            return <p key={index}>{line.content}</p>;
+            return <p key={line.id}>{line.content}</p>;
           }
 
           return (
-            <p key={index}>
-              {line.content.map((text, index) => {
+            <p key={line.id}>
+              {line.content.map(text => {
                 if (text.type === "link") {
                   return (
-                    <a key={index} href="#">
+                    <a key={text.id} href="#">
                       {text.content}
                     </a>
                   );
                 }
 
-                return <Fragment key={index}>{text.content}</Fragment>;
+                return <Fragment key={text.id}>{text.content}</Fragment>;
               })}
             </p>
           );

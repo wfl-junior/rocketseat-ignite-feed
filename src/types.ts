@@ -5,11 +5,13 @@ export interface Author {
 }
 
 export interface NestedContent {
+  id: number;
   type?: "link";
   content: string;
 }
 
 export interface Content {
+  id: number;
   type: "paragraph";
   content: string | NestedContent[];
 }
