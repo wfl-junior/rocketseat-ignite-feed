@@ -8,6 +8,16 @@ import styles from "./Post.module.css";
 
 type PostProps = Omit<PostData, "id">;
 
+function* generateId() {
+  let id = 1;
+
+  while (true) {
+    yield ++id;
+  }
+}
+
+const idGenerator = generateId();
+
 export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
   const [newCommentText, setNewCommentText] = useState("");
   const [comments, setComments] = useState<CommentData[]>([
@@ -34,7 +44,7 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
     setComments(comments => [
       ...comments,
       {
-        id: comments.length + 1,
+        id: idGenerator.next().value!,
         content: newCommentText,
       },
     ]);
@@ -43,7 +53,9 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
   }
 
   function deleteComment(id: CommentData["id"]) {
-    console.log(`Deletar comentário: ${id}`);
+    setComments(comments => {
+      return comments.filter(comment => comment.id !== id);
+    });
   }
 
   return (
@@ -101,15 +113,17 @@ export const Post: React.FC<PostProps> = ({ author, publishedAt, content }) => {
         </footer>
       </form>
 
-      <div className={styles.commentList}>
-        {comments.map(comment => (
-          <Comment
-            key={comment.id}
-            onDeleteComment={deleteComment}
-            {...comment}
-          />
-        ))}
-      </div>
+      {comments.length > 0 && (
+        <div className={styles.commentList}>
+          {comments.map(comment => (
+            <Comment
+              key={comment.id}
+              onDeleteComment={deleteComment}
+              {...comment}
+            />
+          ))}
+        </div>
+      )}
     </article>
   );
 };
